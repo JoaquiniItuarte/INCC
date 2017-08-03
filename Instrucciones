@@ -1,0 +1,33 @@
+************************************************************************************+
+PARA FORMATEAR LOS LIBROS Y PODERLE APLICAR LSA:
+
+En la carpeta: /Code/Book formater/ pongan los libros que quieran en formato txt.
+Luego abran el archivo scriptFormater.py y ahi escriben el nombre de los libros que quieren formatear
+(si terminan en .txt escriban el .txt tambien) en la variable 
+books = [ 'Libros', ...]
+
+Luego corran python desde esa carpeta: python scriptFormater.py
+y los formatea solos. Los libros formateados tienen el mismo nombre que el libro pero terminan con "_formateado.txt"
+
+****************************************************************************************
+PARA HACER LSA:
+
+A los libros formateados ponerlos en la carpeta /Formated Books
+
+Desde la carpeta principal (TPINCC/) ejecutar el script LSA applier.
+
+****************************************************************************************
+PARA HACER LAS SIMILITUDES CON LAS PALABRAS:
+una vez hecho el lsa para el libro, un un archivo que se llame igual que el archivo del libro (.txt incluido) agregandole
+_words al final, escribir todas las palabras, una por renglon, que se quieran ver las parecidas.
+Poner este archvo en /Lsaed books/Similarities/
+
+Desde la carpeta principal luego ejecutar desde una terminal python similarities_maker.py
+
+
+***************************************************************************************
+VER SIMILITUDES O PALABRAS DE UN LIBRO
+
+una vez hechas la similitudes, para verlas o para ver todas las palabras del libro correr desde una terminal desde la carpeta principal, python print_words.py
+Las palabras van a estar en orden
+
