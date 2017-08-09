@@ -20,6 +20,17 @@ def print_words(book_name):
 	for word in sorted(dictionarie.keys()):
 		print word
 
+def print_all_sorted_words(book):
+	similarities_folder = '/Lsaed books/Dictionaries/'
+	directorio = os.getcwd() + similarities_folder + book
+	dictionary_of_similarities = loadSaveLsaData.load_lsa_dictionary( directorio)
+	
+	print book
+	for word, value in dictionary_of_similarities.items():
+		print(word)
+
+
+
 
 print 'Elegir UN solo libro'
 dictionary_folder = '/Lsaed books/Dictionaries/'

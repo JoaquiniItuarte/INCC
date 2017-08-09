@@ -14,6 +14,9 @@ import os
 #Retorna matriz, mapeo de palabra a indice
 def apply_lsa(book_full_path, book_name, folder_to_save_data, k=300):
 
+	print('Haciendo libro')
+	print(book_name)
+
 	print( 'Obteniendo matriz que representa al libro...\n' )
 	list_of_list_of_words = loadSaveLsaData.load_book(book_full_path)
 
