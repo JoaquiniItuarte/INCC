@@ -26,8 +26,8 @@ Desde la carpeta principal luego ejecutar desde una terminal python similarities
 
 
 ***************************************************************************************
-VER SIMILITUDES O PALABRAS DE UN LIBRO
+VER PALABRAS DE UN LIBRO
 
-una vez hechas la similitudes, para verlas o para ver todas las palabras del libro correr desde una terminal desde la carpeta principal, python print_words.py
+una vez hecho el LSA, para ver las palabras o para ver todas las palabras del libro correr desde una terminal desde la carpeta principal, python print_words.py
 Las palabras van a estar en orden
 
