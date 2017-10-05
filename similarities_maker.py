@@ -79,25 +79,43 @@ def get_ranking(book_name, words):
 	dictionary_of_book_values = dictionary_of_book.values()
 	matrix = loadSaveLsaData.load_lsa_matrix(current_dir+matrices_folder + book_name)
 
-	print 'Haciendo similarities para un libro'
-	dictionary = {}
-	for word in words:
+	with open( current_dir + similarities_folder + book_name + '_Familias', 'w+' ) as file_book:
 
-		print 'palabra: ',
-		print word
-		similarities_for_word = comparer.neighbourhood_of_word(dictionary_of_book, matrix, word)
-		
-		similarities_for_word_with_index = []
-		for index in range(len(similarities_for_word)):
-			similarities_for_word_with_index.append( [similarities_for_word[index], index, dictionary_of_book_keys[dictionary_of_book_values.index(index)]])
+		print 'Haciendo similarities para un libro'
+		print book_name
+		#dictionary = {}
+		for word in words:
+			file_book.write( '\n***************************************************************************************************\n')
+			file_book.write('PALABRA: ' + word + '\n')
+			file_book.write( 'Top similares: ')
 
-		sorted_similarities_for_word_with_index = list(reversed( sorted(similarities_for_word_with_index, key=lambda x: x[0] ) ))
-		dictionary[word] = sorted_similarities_for_word_with_index
-		
+			print 'palabra actual: ',
+			print word
+			similarities_for_word = comparer.neighbourhood_of_word(dictionary_of_book, matrix, word)
+			
+			similarities_for_word_with_index = []
+			for index in range(len(similarities_for_word)):
+				similarities_for_word_with_index.append( [similarities_for_word[index], dictionary_of_book_values.index(index), dictionary_of_book_keys[dictionary_of_book_values.index(index)]])
 
-	save_book_words_similarity(dictionary, current_dir + similarities_folder + book_name)
+			sorted_similarities_for_word_with_index = list(reversed( sorted(similarities_for_word_with_index, key=lambda x: x[0] ) ))
 
-	return dictionary
+			for index in range(len(sorted_similarities_for_word_with_index)):
+				word2 = str( sorted_similarities_for_word_with_index[index][2] )
+				word2_index = str( sorted_similarities_for_word_with_index[index][1] )
+				similitude_between_both_words = str( sorted_similarities_for_word_with_index[index][0] )
+				
+				file_book.write( str(index) + ': ')
+				file_book.write(word2 + ' Indice palabra: ' + word2_index + 'Similitud: ')
+				file_book.write(similitude_between_both_words + '\n ')
+
+
+
+			#dictionary[word] = sorted_similarities_for_word_with_index
+			
+
+		#save_book_words_similarity(dictionary, current_dir + similarities_folder + book_name)
+
+	#return dictionary
 
 def print_top_words(top_amount, book):
 	similarities_folder = '/Lsaed books/Similarities/'
@@ -135,22 +153,37 @@ def print_all_sorted_words(book):
 
 
 def pick_up_words_from_file(book_name):
-	similarities_folder = '/Lsaed books/Similarities/'
-	directorio = os.getcwd() + similarities_folder + book_name + '_words'
+	similarities_folder = '/Lsaed books/Words/'
+	directorio = os.getcwd() + similarities_folder + book_name
 	words = []
 	file_opened = open( directorio )
 	for line in file_opened.readlines():
-		words_list = line.split()
-		word = words_list[0]
-		words.append(word)
+		#words_list = line.decode("utf-8-sig").encode("utf-8").split()
+		#words_list = line.decode('cp1250').encode("utf-8").split() #the hand - more notes -
+		words_list = line.split() #factotum - shortstory
+		if len(words_list) > 0:
+			word = words_list[0]
+			words.append(word)
 
 	return words
 
 
 print 'Elegir libros para hacer los rankings de cercania de palabras'
-books = tool.pick_books ( tool.get_books('/Lsaed books/Matrices/') )
+books = tool.pick_books ( tool.get_books('/Lsaed books/Words/') )
 
 for book in books:
-	list_of_words = pick_up_words_from_file(book)
-	get_ranking(book, list_of_words)
-	
+	try:
+		print '***********************************************************************************************************\n'
+		list_of_words = pick_up_words_from_file(book)
+		get_ranking(book, list_of_words)
+		print '***********************************************************************************************************\n'
+	except Exception as e:
+		print '############################################################################################################\n'
+		print '############################################################################################################\n'
+		print '############################################################################################################\n'
+		print 'Error: '
+		print(e)
+		print 'En libro: ' + book
+
+
+
