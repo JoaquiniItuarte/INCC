@@ -7,7 +7,7 @@ from os import listdir
 from os.path import isfile, join
 
 
-'''
+
 def print_words(book_name):
 	dictionary_folder = '/Lsaed books/Dictionaries/'
 	current_dir = os.getcwd()
@@ -19,7 +19,6 @@ def print_words(book_name):
 
 	for word in sorted(dictionarie.keys()):
 		print word
-'''
 
 def print_words_2(book_name):
 	dictionary_folder = '/Lsaed books/Dictionaries/'
