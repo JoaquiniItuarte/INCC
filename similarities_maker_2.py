@@ -66,7 +66,7 @@ def get_similarities_of_book(book_name):
 	return load_book_words_similarity(file_name)
 
 
-def get_ranking(book_name, words):
+def get_ranking(book_name, words, top_limit):
 	dictionary_folder = '/Lsaed books/Dictionaries/'
 	matrices_folder = '/Lsaed books/Matrices/'
 	similarities_folder = '/Lsaed books/Similarities/'
@@ -85,16 +85,16 @@ def get_ranking(book_name, words):
 		print book_name
 		#dictionary = {}
 		for word in words:
-			file_book.write( '\n***************************************************************************************************\n')
-			file_book.write('PALABRA: ' + word + '\n')
-			file_book.write( 'Top similares: ')
+			file_book.write( '***************************************************************************************************')
+			file_book.write('PALABRA: ' + word)
+			file_book.write( ' Top similares: \n')
 
 			print 'palabra actual: ',
 			print word
 			similarities_for_word = comparer.neighbourhood_of_word(dictionary_of_book, matrix, word)
 			
 			similarities_for_word_with_index = []
-			for index in range(len(similarities_for_word)):
+			for index in range(top_limit): #range(len(similarities_for_word)):
 				similarities_for_word_with_index.append( [similarities_for_word[index], dictionary_of_book_values.index(index), dictionary_of_book_keys[dictionary_of_book_values.index(index)]])
 
 			sorted_similarities_for_word_with_index = list(reversed( sorted(similarities_for_word_with_index, key=lambda x: x[0] ) ))
@@ -105,8 +105,12 @@ def get_ranking(book_name, words):
 				similitude_between_both_words = str( sorted_similarities_for_word_with_index[index][0] )
 				
 				file_book.write( str(index) + ': ')
-				file_book.write(word2 + ' Indice palabra: ' + word2_index + ' Similitud: ')
-				file_book.write(similitude_between_both_words + '\n ')
+				file_book.write(word2 + ' ')
+				file_book.write(similitude_between_both_words)
+				if word2 in words:
+					file_book.write(' *************')
+				file_book.write('\n ')
+
 
 
 
@@ -152,7 +156,7 @@ def print_all_sorted_words(book):
 			print(value[i])
 
 
-def pick_up_words_from_file(book_name):
+def pick_up_words_from_file_try_1(book_name):
 	similarities_folder = '/Lsaed books/Words/'
 	directorio = os.getcwd() + similarities_folder + book_name
 	words = []
@@ -164,26 +168,77 @@ def pick_up_words_from_file(book_name):
 		if len(words_list) > 0:
 			word = words_list[0]
 			words.append(word)
+	return words
+
+def pick_up_words_from_file_try_2(book_name):
+	similarities_folder = '/Lsaed books/Words/'
+	directorio = os.getcwd() + similarities_folder + book_name
+	words = []
+	file_opened = open( directorio )
+	for line in file_opened.readlines():
+		#words_list = line.decode("utf-8-sig").encode("utf-8").split()
+		words_list = line.decode('cp1250').encode("utf-8").split() #the hand - more notes -
+		#words_list = line.split() #factotum - shortstory
+		if len(words_list) > 0:
+			word = words_list[0]
+			words.append(word)
+
+	return words
+
+def pick_up_words_from_file_try_3(book_name):
+	similarities_folder = '/Lsaed books/Words/'
+	directorio = os.getcwd() + similarities_folder + book_name
+	words = []
+	file_opened = open( directorio )
+	for line in file_opened.readlines():
+		words_list = line.decode("utf-8-sig").encode("utf-8").split()
+		#words_list = line.decode('cp1250').encode("utf-8").split() #the hand - more notes -
+		#words_list = line.split() #factotum - shortstory
+		if len(words_list) > 0:
+			word = words_list[0]
+			words.append(word)	
 
 	return words
 
 
 print 'Elegir libros para hacer los rankings de cercania de palabras'
 books = tool.pick_books ( tool.get_books('/Lsaed books/Words/') )
+top_limit = 30
 
 for book in books:
+	print '***********************************************************************************************************'
 	try:
-		print '***********************************************************************************************************\n'
-		list_of_words = pick_up_words_from_file(book)
-		get_ranking(book, list_of_words)
-		print '***********************************************************************************************************\n'
+		print 'Trying format 1'
+		list_of_words = pick_up_words_from_file_try_1(book)
+		get_ranking(book, list_of_words, top_limit)
+	
 	except Exception as e:
-		print '############################################################################################################\n'
-		print '############################################################################################################\n'
-		print '############################################################################################################\n'
-		print 'Error: '
-		print(e)
-		print 'En libro: ' + book
+		print 'Error: ',
+		print(e),
+		print ' En libro: ' + book
+
+		try:
+			print 'Trying format 2'
+			list_of_words = pick_up_words_from_file_try_2(book)
+			get_ranking(book, list_of_words, top_limit)
+		
+		except Exception as e:
+			print 'Error: ',
+			print(e),
+			print ' En libro: ' + book
+
+			try:
+				print 'Trying format 3'
+				list_of_words = pick_up_words_from_file_try_3(book)
+				get_ranking(book, list_of_words, top_limit)
+					
+			except Exception as e:
+				print '############################################################################################################'
+				print '############################################################################################################'
+				print '############################################################################################################'
+				print 'Error: ',
+				print(e),
+				print ' En libro: ' + book
 
 
 
