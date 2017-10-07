@@ -94,12 +94,12 @@ def get_ranking(book_name, words, top_limit):
 			similarities_for_word = comparer.neighbourhood_of_word(dictionary_of_book, matrix, word)
 			
 			similarities_for_word_with_index = []
-			for index in range(top_limit): #range(len(similarities_for_word)):
+			for index in range(len(similarities_for_word)):
 				similarities_for_word_with_index.append( [similarities_for_word[index], dictionary_of_book_values.index(index), dictionary_of_book_keys[dictionary_of_book_values.index(index)]])
 
 			sorted_similarities_for_word_with_index = list(reversed( sorted(similarities_for_word_with_index, key=lambda x: x[0] ) ))
 
-			for index in range(len(sorted_similarities_for_word_with_index)):
+			for index in range(top_limit):
 				word2 = str( sorted_similarities_for_word_with_index[index][2] )
 				word2_index = str( sorted_similarities_for_word_with_index[index][1] )
 				similitude_between_both_words = str( sorted_similarities_for_word_with_index[index][0] )
